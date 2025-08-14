@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <title>Lord of The Ring</title>
+</head>
+<body>
+    <table class="table table-dark table-hover table-striped ratio-16x9">
+        <thead>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Raça</th>
+            <th>Arma</th>
+            <th>Status</th>
+            <th>Mensagem</th>
+        </thead>
+        <tbody id="tbody">
+            
+        </tbody>
+    </table>
+
+    <script>
+        const rota = 'http://localhost:3000';
+
+        async function getById() {
+            const id = 4;
+            const res = await fetch(`${rota}/characters/${id}`);
+
+            const data = await res.json();
+            const { name, type, race, weapon, status, message} = data
+            document.getElementById("id").innerText = id;
+            document.getElementById("name").innerText = name;
+            document.getElementById("type").innerText = type;
+            document.getElementById("race").innerText = race;
+            document.getElementById("weapon").innerText = weapon;
+            document.getElementById("status").innerText = status;
+            document.getElementById("message").innerText = message;
+        }
+
+        async function list() {
+            const res = await fetch(`${rota}/characters/`);
+            const data = await res.json();
+
+            const tbody = document.getElementById('tbody');
+            tbody.innerHTML = '';
+            data.forEach(i => {
+                const tr = document.createElement('tr');
+                tr.className = "table-striped "
+                tr.innerHTML = `
+                <td>${i.id}</td>
+                <td>${i.name}</td>
+                <td>${i.type}</td>
+                <td>${i.race}</td>
+                <td>${i.weapon}</td>
+                <td>${i.status}</td>
+                <td>${i.message}</td>
+                `;
+                tbody.appendChild(tr)
+            });
+        }
+
+        list()
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+
+</body>
+</html>
